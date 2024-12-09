@@ -2,13 +2,24 @@ on:
     workflow_dispatch:
     schedule:
       - cron: '*/2 * * * *'
+# jobs:
+#   test_schedule:
+#     name: Test schedule
+#     if: github.event_name == 'schedule'
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: my-step
+#         run: echo "Hello World!!!ss"
+#       - name: two-steop
+#         run: echo "Hello ddd"
 jobs:
-  test_schedule:
-    name: Test schedule
+  build:
     if: github.event_name == 'schedule'
+
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
-        run: echo "Hello World!!!ss"
-      - name: two-steop
-        run: echo "Hello ddd"
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+      - name: echooo
+        run: echo "Hello echo"
