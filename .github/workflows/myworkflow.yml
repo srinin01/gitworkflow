@@ -19,15 +19,13 @@ on:
       isTrueWhenScheduled:
         required: true
         type: boolean
-
-
-
 jobs:
-  test:
-    uses: ./.github/workflows/run-job-with-params.yml
-    secrets: inherit
-    with:
-      springProfile: ${{ inputs.springProfile || 'staging' }}
-      logLevel: ${{ inputs.logLevel || 'DEBUG' }}
-      isFalseWhenScheduled: ${{ inputs.isFalseWhenScheduled || false }}
-      isTrueWhenScheduled: ${{ !contains(inputs.isTrueWhenScheduled, 'false') }}
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g bats
+      - run: bats -v
