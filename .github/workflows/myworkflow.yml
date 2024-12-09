@@ -1,0 +1,33 @@
+name: Srini Terraform
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+    inputs:
+      springProfile:
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      logLevel:
+        required: true
+        type: string
+      isFalseWhenScheduled:
+        required: true
+        type: boolean
+      isTrueWhenScheduled:
+        required: true
+        type: boolean
+
+
+
+jobs:
+  test:
+    uses: ./.github/workflows/run-job-with-params.yml
+    secrets: inherit
+    with:
+      springProfile: ${{ inputs.springProfile || 'staging' }}
+      logLevel: ${{ inputs.logLevel || 'DEBUG' }}
+      isFalseWhenScheduled: ${{ inputs.isFalseWhenScheduled || false }}
+      isTrueWhenScheduled: ${{ !contains(inputs.isTrueWhenScheduled, 'false') }}
